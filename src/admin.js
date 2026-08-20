@@ -655,7 +655,6 @@ function updatePaymentMethods() {
     payMetodoSelect.appendChild(opt);
 
     if (payMontoInput) {
-      payMontoInput.placeholder = 'Ej: 1500.00';
       payMontoInput.step = '0.01';
     }
     if (payMontoPrefix) payMontoPrefix.textContent = 'Bs.';
@@ -668,7 +667,6 @@ function updatePaymentMethods() {
     });
 
     if (payMontoInput) {
-      payMontoInput.placeholder = 'Ej: 100000';
       payMontoInput.step = '1';
     }
     if (payMontoPrefix) payMontoPrefix.textContent = 'COP$';
@@ -682,7 +680,6 @@ function updatePaymentMethods() {
     });
 
     if (payMontoInput) {
-      payMontoInput.placeholder = 'Ej: 25.00';
       payMontoInput.step = '0.01';
     }
     if (payMontoPrefix) payMontoPrefix.textContent = '$';
@@ -793,8 +790,30 @@ function initFormsAndModals() {
           URL.revokeObjectURL(gallerySelectedFileBase64);
         }
         gallerySelectedFileBase64 = URL.createObjectURL(file);
+
+        let previewImg = document.getElementById('gal-preview-img');
+        if (!isVideo) {
+          if (!previewImg) {
+            previewImg = document.createElement('img');
+            previewImg.id = 'gal-preview-img';
+            previewImg.style.maxHeight = '150px';
+            previewImg.style.objectFit = 'contain';
+            previewImg.style.borderRadius = '8px';
+            previewImg.className = 'mt-2 w-auto shadow-md border border-[#c5a059] bg-white p-1 mx-auto block';
+            galFilePreviewName.appendChild(previewImg);
+          }
+          previewImg.src = gallerySelectedFileBase64;
+          previewImg.classList.remove('hidden');
+        } else if (previewImg) {
+          previewImg.classList.add('hidden');
+        }
       } else {
         galFilePreviewName.classList.add('hidden');
+        const previewImg = document.getElementById('gal-preview-img');
+        if (previewImg) {
+          previewImg.classList.add('hidden');
+          previewImg.src = '';
+        }
         gallerySelectedFileBase64 = null;
         gallerySelectedFileType = 'foto';
       }

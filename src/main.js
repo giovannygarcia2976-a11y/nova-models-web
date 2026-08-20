@@ -134,22 +134,65 @@ document.addEventListener('DOMContentLoaded', () => {
   const fotoFileInput = document.getElementById('fotoFile');
   const filePreviewName = document.getElementById('file-preview-name');
   let selectedFileBase64 = null;
+  let selectedFileObjectUrl = null;
 
-  if (fotoFileInput && filePreviewName) {
+  if (fotoFileInput) {
     fotoFileInput.addEventListener('change', (e) => {
       const files = e.target.files;
       if (files && files.length > 0) {
-        const filenames = Array.from(files).map(f => f.name).join(', ');
-        filePreviewName.textContent = `📷 Foto Seleccionada: ${filenames}`;
-        filePreviewName.classList.remove('hidden');
+        const file = files[0];
 
+        // Revocar la URL de objeto previa si existe para liberar memoria
+        if (selectedFileObjectUrl) {
+          URL.revokeObjectURL(selectedFileObjectUrl);
+        }
+
+        // Crear URL temporal con URL.createObjectURL
+        selectedFileObjectUrl = URL.createObjectURL(file);
+
+        // Crear o actualizar la etiqueta <img> para previsualizar la miniatura real
+        let previewImg = document.getElementById('foto-preview-img');
+        if (!previewImg) {
+          previewImg = document.createElement('img');
+          previewImg.id = 'foto-preview-img';
+          previewImg.style.maxHeight = '150px';
+          previewImg.style.objectFit = 'contain';
+          previewImg.style.borderRadius = '8px';
+          previewImg.className = 'mt-3 w-auto shadow-md border border-[#c5a059] bg-white p-1 transition-all duration-300 pointer-events-auto mx-auto';
+
+          const container = filePreviewName ? filePreviewName.parentElement : fotoFileInput.parentElement;
+          if (container) {
+            container.appendChild(previewImg);
+          }
+        }
+
+        previewImg.src = selectedFileObjectUrl;
+        previewImg.classList.remove('hidden');
+
+        if (filePreviewName) {
+          filePreviewName.textContent = `📷 ${file.name}`;
+          filePreviewName.classList.remove('hidden');
+        }
+
+        // Cargar Base64 como respaldo
         const reader = new FileReader();
         reader.onload = (event) => {
           selectedFileBase64 = event.target.result;
         };
-        reader.readAsDataURL(files[0]);
+        reader.readAsDataURL(file);
       } else {
-        filePreviewName.classList.add('hidden');
+        if (selectedFileObjectUrl) {
+          URL.revokeObjectURL(selectedFileObjectUrl);
+          selectedFileObjectUrl = null;
+        }
+        const previewImg = document.getElementById('foto-preview-img');
+        if (previewImg) {
+          previewImg.classList.add('hidden');
+          previewImg.src = '';
+        }
+        if (filePreviewName) {
+          filePreviewName.classList.add('hidden');
+        }
         selectedFileBase64 = null;
       }
     });

@@ -54,7 +54,7 @@
           <label class="block text-xs font-label-caps uppercase text-[#4e4639] mb-1.5 font-semibold">Usuario</label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-3 top-3 text-[#645d5b] text-sm">person</span>
-            <input id="login-email" type="text" required placeholder="Usuario" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] placeholder-[#645d5b] focus:outline-none transition-colors" />
+            <input id="login-email" type="text" required class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:outline-none transition-colors" />
           </div>
         </div>
 
@@ -62,7 +62,7 @@
           <label class="block text-xs font-label-caps uppercase text-[#4e4639] mb-1.5 font-semibold">Contraseña</label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-3 top-3 text-[#645d5b] text-sm">lock</span>
-            <input id="login-password" type="password" required placeholder="••••••••" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] placeholder-[#645d5b] focus:outline-none transition-colors" />
+            <input id="login-password" type="password" required class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:outline-none transition-colors" />
           </div>
         </div>
 
@@ -249,7 +249,7 @@
             <!-- Search input -->
             <div class="relative w-full">
               <span class="material-symbols-outlined absolute left-3 top-3 text-[#645d5b] text-sm">search</span>
-              <input id="search-input" type="text" placeholder="Buscar por nombre, email o ciudad..." class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:outline-none transition-colors" />
+              <input id="search-input" type="text" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:outline-none transition-colors" />
             </div>
           </div>
 
@@ -415,12 +415,12 @@
       <form id="payment-form" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Nombre de la Modelo *</label>
-          <input id="pay-modelo" type="text" required placeholder="Ej. Elena Rostova" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
+          <input id="pay-modelo" type="text" required class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
         </div>
 
         <div>
           <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Concepto del Pago *</label>
-          <input id="pay-concepto" type="text" required placeholder="Ej. Inscripción, Mensualidad Agosto" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
+          <input id="pay-concepto" type="text" required class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
         </div>
 
         <!-- Moneda y Monto (Moneda a la izquierda, Monto a la derecha) -->
@@ -438,7 +438,7 @@
             <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Monto *</label>
             <div class="relative">
               <span id="pay-monto-prefix" class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-[#775a19] pointer-events-none">$</span>
-              <input id="pay-monto" type="number" step="0.01" required placeholder="Ej: 25.00" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 pl-12 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none font-semibold" />
+              <input id="pay-monto" type="number" step="0.01" required class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 pl-12 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none font-semibold" />
             </div>
           </div>
         </div>
@@ -472,7 +472,7 @@
       <form id="gallery-form" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Título / Descripción *</label>
-          <input id="gal-titulo" type="text" required placeholder="Ej. Desfile Alta Costura Primavera" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
+          <input id="gal-titulo" type="text" required class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
         </div>
 
         <!-- Custom Dropzone for Native File Input (Photo or Video) -->
