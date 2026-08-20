@@ -129,12 +129,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ----------------------------------------------------
-  // FILE UPLOAD PREVIEW FOR REGISTRATION FORM
+  // FILE UPLOAD PREVIEW & REMOVAL FOR REGISTRATION FORM
   // ----------------------------------------------------
   const fotoFileInput = document.getElementById('fotoFile');
-  const filePreviewName = document.getElementById('file-preview-name');
+  const dropZonePrompt = document.getElementById('drop-zone-prompt');
+  const dropZonePreview = document.getElementById('drop-zone-preview');
+  const fotoPreviewImg = document.getElementById('foto-preview-img');
+  const removeFotoBtn = document.getElementById('remove-foto-btn');
   let selectedFileBase64 = null;
   let selectedFileObjectUrl = null;
+
+  function resetFotoUploadState() {
+    if (selectedFileObjectUrl) {
+      URL.revokeObjectURL(selectedFileObjectUrl);
+      selectedFileObjectUrl = null;
+    }
+    selectedFileBase64 = null;
+    if (fotoFileInput) {
+      fotoFileInput.value = '';
+      fotoFileInput.style.pointerEvents = 'auto';
+    }
+    if (fotoPreviewImg) {
+      fotoPreviewImg.src = '';
+    }
+    if (dropZonePreview) {
+      dropZonePreview.classList.add('hidden');
+    }
+    if (dropZonePrompt) {
+      dropZonePrompt.classList.remove('hidden');
+    }
+  }
 
   if (fotoFileInput) {
     fotoFileInput.addEventListener('change', (e) => {
@@ -142,59 +166,53 @@ document.addEventListener('DOMContentLoaded', () => {
       if (files && files.length > 0) {
         const file = files[0];
 
-        // Revocar la URL de objeto previa si existe para liberar memoria
+        // Garantizar estrictamente que sea una imagen
+        if (!file.type.startsWith('image/')) {
+          alert('Por favor selecciona únicamente un archivo de imagen (JPG, PNG o WEBP).');
+          resetFotoUploadState();
+          return;
+        }
+
         if (selectedFileObjectUrl) {
           URL.revokeObjectURL(selectedFileObjectUrl);
         }
 
-        // Crear URL temporal con URL.createObjectURL
         selectedFileObjectUrl = URL.createObjectURL(file);
 
-        // Crear o actualizar la etiqueta <img> para previsualizar la miniatura real
-        let previewImg = document.getElementById('foto-preview-img');
-        if (!previewImg) {
-          previewImg = document.createElement('img');
-          previewImg.id = 'foto-preview-img';
-          previewImg.style.maxHeight = '150px';
-          previewImg.style.objectFit = 'contain';
-          previewImg.style.borderRadius = '8px';
-          previewImg.className = 'mt-3 w-auto shadow-md border border-[#c5a059] bg-white p-1 transition-all duration-300 pointer-events-auto mx-auto';
-
-          const container = filePreviewName ? filePreviewName.parentElement : fotoFileInput.parentElement;
-          if (container) {
-            container.appendChild(previewImg);
-          }
+        if (fotoPreviewImg) {
+          fotoPreviewImg.src = selectedFileObjectUrl;
         }
 
-        previewImg.src = selectedFileObjectUrl;
-        previewImg.classList.remove('hidden');
-
-        if (filePreviewName) {
-          filePreviewName.textContent = `📷 ${file.name}`;
-          filePreviewName.classList.remove('hidden');
+        // Ocultar icono y textos iniciales de la zona de carga
+        if (dropZonePrompt) {
+          dropZonePrompt.classList.add('hidden');
         }
 
-        // Cargar Base64 como respaldo
+        // Mostrar únicamente la miniatura con el botón eliminar
+        if (dropZonePreview) {
+          dropZonePreview.classList.remove('hidden');
+        }
+
+        // Desactivar temporalmente pointer-events del input flotante para permitir hacer clic en el botón de eliminar
+        fotoFileInput.style.pointerEvents = 'none';
+
+        // Cargar Base64 de respaldo
         const reader = new FileReader();
         reader.onload = (event) => {
           selectedFileBase64 = event.target.result;
         };
         reader.readAsDataURL(file);
       } else {
-        if (selectedFileObjectUrl) {
-          URL.revokeObjectURL(selectedFileObjectUrl);
-          selectedFileObjectUrl = null;
-        }
-        const previewImg = document.getElementById('foto-preview-img');
-        if (previewImg) {
-          previewImg.classList.add('hidden');
-          previewImg.src = '';
-        }
-        if (filePreviewName) {
-          filePreviewName.classList.add('hidden');
-        }
-        selectedFileBase64 = null;
+        resetFotoUploadState();
       }
+    });
+  }
+
+  if (removeFotoBtn) {
+    removeFotoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      resetFotoUploadState();
     });
   }
 
@@ -409,8 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Reset form & state de forma silenciosa
       regForm.reset();
       updateDynamicForm();
-      if (filePreviewName) filePreviewName.classList.add('hidden');
-      selectedFileBase64 = null;
+      resetFotoUploadState();
 
       if (toast) {
         toast.classList.remove('hidden');

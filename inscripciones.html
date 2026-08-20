@@ -209,13 +209,28 @@
         <!-- Fila: Fotografía de Postulación -->
         <div class="col-full">
           <label class="form-label" for="fotoFile">Fotografía de Postulación *</label>
-          <div class="relative border-2 border-dashed border-[#c5a059] rounded-lg p-5 text-center hover:border-[#775a19] transition-colors cursor-pointer bg-[#f9f9f9] group flex flex-col items-center justify-center min-h-[110px]" id="drop-zone">
-            <input type="file" id="fotoFile" name="fotoFile" accept="image/*" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-            <div class="flex flex-col items-center justify-center pointer-events-none">
+          <div class="relative border-2 border-dashed border-[#c5a059] rounded-lg p-5 text-center hover:border-[#775a19] transition-colors cursor-pointer bg-[#f9f9f9] group flex flex-col items-center justify-center min-h-[140px]" id="drop-zone">
+            <!-- Input de archivo estrictamente 1 solo archivo y solo imágenes -->
+            <input type="file" id="fotoFile" name="fotoFile" accept="image/png, image/jpeg, image/jpg, image/webp" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+            
+            <!-- Estado inicial (Icono + Textos de carga) -->
+            <div id="drop-zone-prompt" class="flex flex-col items-center justify-center pointer-events-none transition-opacity duration-300">
               <span class="material-symbols-outlined text-3xl text-[#775a19] mb-1 group-hover:scale-110 transition-transform">add_a_photo</span>
               <p class="text-xs font-semibold text-[#1a1c1c]">Haz clic o arrastra aquí tu fotografía</p>
-              <p class="text-[10px] text-[#645d5b] mt-0.5">Formato JPG o PNG</p>
-              <div id="file-preview-name" class="mt-2 text-[11px] text-[#775a19] font-bold hidden bg-[#fdf2f0] px-3 py-1 rounded-lg border border-[#c5a059]/40"></div>
+              <p class="text-[10px] text-[#645d5b] mt-0.5">Formato JPG, PNG o WEBP</p>
+            </div>
+
+            <!-- Estado con foto cargada (Miniatura + Botón Eliminar) -->
+            <div id="drop-zone-preview" class="hidden relative flex flex-col items-center justify-center z-20 py-1">
+              <div class="relative inline-block">
+                <img id="foto-preview-img" src="" alt="Vista previa de la fotografía" class="max-h-[160px] max-w-[240px] w-auto object-contain rounded-lg shadow-md border border-[#c5a059] bg-white p-1" />
+                <button type="button" id="remove-foto-btn" title="Eliminar foto" class="absolute -top-2.5 -right-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full p-1.5 shadow-lg transition-transform hover:scale-110 flex items-center justify-center border border-white cursor-pointer z-30 min-w-[28px] min-h-[28px]">
+                  <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+              </div>
+              <p class="text-[11px] font-semibold text-[#775a19] mt-2 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-green-600">check_circle</span> Fotografía cargada correctamente
+              </p>
             </div>
           </div>
         </div>
