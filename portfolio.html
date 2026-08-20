@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Portfolio & Academia | Nova Models BY OMARIS SANABRIA</title>
+  <meta name="description" content="Galería editorial, modelos, pasarela, producciones y sede de la academia Nova Models en San Cristóbal, Táchira." />
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/style.css" />
+
+  <style>
+    /* Explicit 2-Column Grid for Desktop with 1-Column Mobile Fallback */
+    .cards-2col-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 24px !important;
+      max-width: 1100px !important;
+      margin: 40px auto !important;
+      padding: 0 16px !important;
+      width: 100% !important;
+    }
+
+    /* Icon Badge (Fixed 48px square) */
+    .icon-badge {
+      width: 48px !important;
+      height: 48px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 10px !important;
+      background-color: #fdf2f0 !important;
+      border: 1px solid rgba(197, 160, 89, 0.4) !important;
+      color: #775a19 !important;
+      margin-bottom: 16px !important;
+      flex-shrink: 0 !important;
+    }
+
+    @media (max-width: 768px) {
+      .cards-2col-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+        margin: 20px auto !important;
+        padding: 0 16px !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#f9f9f9] text-[#1a1c1c] font-body-md antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Top Navigation Bar (Sticky position top:0 z-index:999 ensures content flows naturally below header) -->
+  <nav class="sticky top-0 w-full z-[999] glass-nav border-b border-[#d1c5b4] transition-all duration-300">
+    <div class="flex justify-between items-center px-4 sm:px-8 py-3.5 max-w-6xl mx-auto">
+      
+      <!-- Top Left Brand with Logo Icon -->
+      <a class="flex items-center gap-3" href="/">
+        <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; max-width: 36px; max-height: 36px; overflow: hidden; border-radius: 6px; border: 1px solid rgba(197, 160, 89, 0.4); display: flex; align-items: center; justify-content: center; background: #ffffff;" class="shrink-0">
+          <img src="/assets/logo.jpg" alt="Nova Models Logo" style="width: 36px; height: 36px; max-width: 36px; max-height: 36px; object-fit: cover; object-position: top;" />
+        </div>
+        <div class="flex flex-col text-left">
+          <span class="font-headline-md text-base sm:text-xl text-[#775a19] font-bold tracking-widest uppercase leading-none">Nova Models</span>
+          <span class="font-label-caps text-[8px] sm:text-[10px] tracking-[0.35em] text-[#4e4639] uppercase font-semibold mt-1">BY OMARIS SANABRIA</span>
+        </div>
+      </a>
+
+      <!-- Right Side Actions: Back to Home -->
+      <div class="flex items-center gap-4">
+        <a class="inline-flex items-center gap-1.5 px-4 py-2 min-h-[44px] bg-white border border-[#d1c5b4] text-[#1a1c1c] hover:text-[#775a19] hover:border-[#775a19] font-button text-xs uppercase tracking-wider rounded-lg transition-all font-semibold" href="/">
+          <span class="material-symbols-outlined text-base">arrow_back</span> Volver al Inicio
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container (Flows naturally under Sticky Nav without overlapping) -->
+  <main class="flex-grow">
+    <!-- Header Section -->
+    <section class="py-6 sm:py-8 bg-[#fdf2f0]/60 border-b border-[#d1c5b4]/40 text-center px-4">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="font-headline-xl text-3xl sm:text-5xl md:text-6xl font-bold text-[#775a19] uppercase tracking-wider">Fotos y Videos</h1>
+      </div>
+    </section>
+
+    <!-- Dynamic Public Gallery Section (Mixed Photo & Video Grid with aspect-ratio 3/4) -->
+    <section class="py-8 sm:py-12 px-4 sm:px-8 max-w-6xl mx-auto">
+      <div class="mb-6 sm:mb-8 flex items-center justify-between border-b border-[#d1c5b4] pb-4">
+        <h2 class="font-headline-md text-xl sm:text-2xl md:text-3xl font-bold text-[#775a19] flex items-center gap-2">
+          <span class="material-symbols-outlined text-[#775a19] text-2xl sm:text-3xl">photo_library</span> Galería de Fotos y Videos
+        </h2>
+      </div>
+
+      <!-- Public Gallery Grid Container -->
+      <div id="public-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- "Ver más" Button Container (Centrado con margin 40px 0) -->
+      <div id="load-more-container" style="display: flex; justify-content: center; margin: 40px 0;">
+        <button id="load-more-btn" class="btn-ghost-gold">
+          <span class="material-symbols-outlined text-base">expand_more</span> Ver más
+        </button>
+      </div>
+    </section>
+
+    <!-- 2-Column Information Cards Section (Horizontal 2-column layout on Desktop, 1-column on Mobile) -->
+    <section class="cards-2col-grid">
+      
+      <!-- Card 1: Formación Profesional -->
+      <div class="bg-white p-6 sm:p-7 rounded-xl border border-[#d1c5b4] hover:border-[#775a19] shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="icon-badge">
+            <span class="material-symbols-outlined text-2xl">school</span>
+          </div>
+          <h3 class="font-headline-md text-lg font-bold text-[#775a19] mb-2">Formación Profesional</h3>
+          <p class="text-xs sm:text-sm text-[#4e4639] leading-relaxed">
+            En Nova Models formamos a nuestros estudiantes con estándares internacionales. Nuestro plan de estudio abarca técnica de pasarela, postura corporal, fotosecuencia, expresión facial y desarrollo integral para desenvolverse con éxito en el mundo de la moda comercial y editorial.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 2: Asesoría de Imagen -->
+      <div class="bg-white p-6 sm:p-7 rounded-xl border border-[#d1c5b4] hover:border-[#775a19] shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="icon-badge">
+            <span class="material-symbols-outlined text-2xl">style</span>
+          </div>
+          <h3 class="font-headline-md text-lg font-bold text-[#775a19] mb-2">Asesoría de Imagen</h3>
+          <p class="text-xs sm:text-sm text-[#4e4639] leading-relaxed">
+            Guiamos a cada modelo en el potenciamiento de su marca personal, estilismo, cuidado de la piel, guardarropa de casting y etiqueta profesional. Desarrollamos la seguridad en escena y la elegancia natural para destacar en cada audición.
+          </p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Official Footer -->
+  <footer class="relative z-20 bg-white border-t border-[#d1c5b4]/60 py-6 text-xs text-[#645d5b]">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-2.5">
+        <div style="width: 32px; height: 32px; min-width: 32px; min-height: 32px; max-width: 32px; max-height: 32px; overflow: hidden; border-radius: 6px; border: 1px solid rgba(197, 160, 89, 0.4); display: flex; align-items: center; justify-content: center; background: #ffffff;" class="shrink-0">
+          <img src="/assets/logo.jpg" alt="Nova Models Logo" style="width: 32px; height: 32px; max-width: 32px; max-height: 32px; object-fit: cover; object-position: top;" />
+        </div>
+        <span class="font-headline-md text-xs sm:text-sm text-[#775a19] font-bold tracking-wider uppercase">Nova Models BY OMARIS SANABRIA</span>
+      </div>
+      <div class="text-[11px]">&copy; 2026 Nova Models. Todos los derechos reservados.</div>
+    </div>
+  <!-- Lightbox Modal (Vista Ampliada de Imágenes y Videos) -->
+  <div id="lightbox-overlay" class="lightbox-overlay hidden" aria-hidden="true">
+    <button id="lightbox-close" aria-label="Cerrar vista ampliada">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Vista Ampliada" class="hidden" />
+      <video id="lightbox-video" src="" controls playsinline preload="metadata" class="hidden"></video>
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

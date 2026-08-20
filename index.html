@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Nova Models | Agencias & Academia de Modelaje Profesional</title>
+  <meta name="description" content="La agencia y academia de modelaje más prestigiosa. Descubre nuevos talentos y postúlate a nuestra agencia editorial y comercial." />
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body class="bg-[#f9f9f9] text-[#1a1c1c] font-body-md antialiased min-h-screen flex flex-col justify-between selection:bg-[#c5a059]/20 selection:text-[#775a19]">
+
+  <!-- Fullscreen Minimalist Portal Landing (Hero Only) -->
+  <main class="min-h-screen w-full relative flex items-center justify-center pt-8 pb-12 overflow-hidden px-4">
+    <!-- Pure White Clean Background with Soft Pink & Champagne Gold Glows -->
+    <div class="absolute inset-0 z-0 bg-white overflow-hidden flex items-center justify-center pointer-events-none">
+      <div class="absolute w-[600px] sm:w-[900px] h-[600px] sm:h-[900px] bg-[#fdf2f0] rounded-full blur-3xl opacity-80 pointer-events-none"></div>
+      <div class="absolute w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-[#c5a059]/10 rounded-full blur-3xl pointer-events-none top-1/4"></div>
+    </div>
+
+    <!-- Hero Content & Buttons -->
+    <div class="relative z-10 flex flex-col items-center text-center max-w-5xl mx-auto my-auto py-4 w-full">
+
+      <!-- Larger Brand Title Block -->
+      <div class="mb-6 text-center flex flex-col items-center justify-center">
+        <h2 class="font-display-lg text-4xl sm:text-7xl md:text-8xl lg:text-[96px] font-bold tracking-[0.18em] sm:tracking-[0.22em] text-[#775a19] uppercase leading-tight">
+          Nova Models
+        </h2>
+        <p class="font-label-caps text-[10px] sm:text-base md:text-xl lg:text-2xl tracking-[0.35em] sm:tracking-[0.55em] text-[#4e4639] uppercase mt-2 font-semibold">
+          BY OMARIS SANABRIA
+        </p>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="font-display-lg text-2xl sm:text-5xl md:text-6xl font-bold text-[#1a1c1c] mb-4 leading-tight max-w-4xl px-2">
+        Donde nace tu carrera en el modelaje
+      </h1>
+
+      <!-- Description -->
+      <p class="font-body-lg text-sm sm:text-lg md:text-xl text-[#4e4639] max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
+        Formamos y representamos a la próxima generación de modelos profesionales para pasarelas, publicaciones editoriales y campañas internacionales.
+      </p>
+
+      <!-- Action Buttons (Responsive Touch Targets) -->
+      <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4">
+        <a class="inline-flex items-center justify-center px-8 py-4 min-h-[48px] gold-gradient text-white font-button text-xs font-bold uppercase tracking-[0.18em] rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 w-full sm:w-auto" href="/inscripciones.html">
+          Inicia tu Postulación
+        </a>
+        <a class="inline-flex items-center justify-center px-8 py-4 min-h-[48px] bg-white/90 backdrop-blur-md text-[#1a1c1c] border border-[#d1c5b4] font-button text-xs font-bold uppercase tracking-[0.18em] rounded-lg hover:border-[#775a19] transition-all transform hover:-translate-y-0.5 w-full sm:w-auto" href="/portfolio.html">
+          Explorar Portfolio
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Official Footer -->
+  <footer class="relative z-20 bg-white/95 backdrop-blur-md border-t border-[#d1c5b4]/60 py-6 text-xs text-[#645d5b]">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-2.5">
+        <div style="width: 32px; height: 32px; min-width: 32px; min-height: 32px; max-width: 32px; max-height: 32px; overflow: hidden; border-radius: 6px; border: 1px solid rgba(197, 160, 89, 0.4); display: flex; align-items: center; justify-content: center; background: #ffffff;" class="shrink-0">
+          <img src="/assets/logo.jpg" alt="Nova Models Logo" style="width: 32px; height: 32px; max-width: 32px; max-height: 32px; object-fit: cover; object-position: top;" />
+        </div>
+        <span class="font-headline-md text-xs sm:text-sm text-[#775a19] font-bold tracking-wider uppercase">Nova Models BY OMARIS SANABRIA</span>
+      </div>
+      <div class="text-[11px] text-[#645d5b]">&copy; 2026 Nova Models. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <!-- Lightbox Modal (Vista Ampliada de Imágenes y Videos) -->
+  <div id="lightbox-overlay" class="lightbox-overlay hidden" aria-hidden="true">
+    <button id="lightbox-close" aria-label="Cerrar vista ampliada">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Vista Ampliada" class="hidden" />
+      <video id="lightbox-video" src="" controls playsinline preload="metadata" class="hidden"></video>
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

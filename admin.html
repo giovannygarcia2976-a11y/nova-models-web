@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Nova Models | Panel Administrativo</title>
+  <meta name="description" content="Panel de administración y gestión de modelos para Nova Models BY OMARIS SANABRIA." />
+  
+  <!-- PWA & Mobile Optimization -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Nova Admin" />
+  <link rel="apple-touch-icon" href="/assets/logo.jpg" />
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body class="bg-[#f9f9f9] text-[#1a1c1c] font-body-md antialiased min-h-screen flex flex-col selection:bg-[#c5a059]/20 selection:text-[#775a19]">
+
+  <!-- ========================================== -->
+  <!-- 1. SECURE AUTHENTICATION SCREEN (LOGIN)     -->
+  <!-- ========================================== -->
+  <div id="login-screen" class="fixed inset-0 z-50 bg-[#f9f9f9] flex items-center justify-center p-4">
+    <!-- Soft Pink & Gold Radial Background Glows -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
+      <div class="absolute w-[600px] h-[600px] bg-[#fdf2f0] rounded-full blur-3xl opacity-80"></div>
+      <div class="absolute w-[400px] h-[400px] bg-[#c5a059]/10 rounded-full blur-2xl top-1/4"></div>
+    </div>
+
+    <div class="bg-white max-w-md w-full p-6 sm:p-8 rounded-2xl border border-[#d1c5b4] shadow-xl relative z-10">
+      <!-- Brand Logo -->
+      <div class="text-center mb-6 sm:mb-8">
+        <div class="inline-flex p-3 rounded-full bg-[#fdf2f0] border border-[#c5a059]/30 mb-3">
+          <span class="material-symbols-outlined text-[#775a19] text-3xl">admin_panel_settings</span>
+        </div>
+        <h1 class="font-headline-md text-2xl font-bold tracking-widest uppercase text-[#775a19]">Nova Models</h1>
+        <p class="font-label-caps text-[10px] tracking-[0.35em] text-[#4e4639] uppercase font-semibold mt-1">BY OMARIS SANABRIA</p>
+      </div>
+
+      <!-- Error Alert -->
+      <div id="login-error" class="hidden mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs text-center font-medium">
+        Credenciales incorrectas. Intenta de nuevo.
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-label-caps uppercase text-[#4e4639] mb-1.5 font-semibold">Usuario</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-3 text-[#645d5b] text-sm">person</span>
+            <input id="login-email" type="text" required placeholder="Usuario" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] placeholder-[#645d5b] focus:outline-none transition-colors" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-label-caps uppercase text-[#4e4639] mb-1.5 font-semibold">Contraseña</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-3 text-[#645d5b] text-sm">lock</span>
+            <input id="login-password" type="password" required placeholder="••••••••" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] placeholder-[#645d5b] focus:outline-none transition-colors" />
+          </div>
+        </div>
+
+        <button id="login-submit-btn" type="submit" class="w-full py-3 min-h-[48px] rounded-lg gold-gradient text-white text-xs font-bold uppercase tracking-wider hover:opacity-95 transition-opacity shadow-md mt-2 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">login</span> Iniciar Sesión
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. ADMIN APPLICATION SHELL (#admin-app)     -->
+  <!-- ========================================== -->
+  <div id="admin-app" class="hidden min-h-screen flex flex-col md:flex-row pb-20 md:pb-0 bg-[#f9f9f9]">
+
+    <!-- DESKTOP SIDEBAR NAVIGATION (Visible >= 768px) -->
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-[#d1c5b4] shrink-0 sticky top-0 h-screen justify-between p-4 z-20">
+      <div>
+        <!-- Brand Header -->
+        <div class="mb-8 pt-2 px-2">
+          <div class="font-headline-md text-xl text-[#775a19] font-bold tracking-widest uppercase">Nova Models</div>
+          <div class="font-label-caps text-[9px] tracking-[0.3em] text-[#4e4639] uppercase font-semibold">BY OMARIS SANABRIA</div>
+        </div>
+
+        <!-- Sidebar Navigation Menu -->
+        <nav class="space-y-1">
+          <button id="nav-dashboard" class="sidebar-nav-btn tab-active-desktop w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-[#4e4639] hover:text-[#775a19] hover:bg-[#fdf2f0] transition-all text-left">
+            <span class="material-symbols-outlined text-lg text-[#775a19]">dashboard</span>
+            <span>Dashboard</span>
+          </button>
+
+          <button id="nav-inscripciones" class="sidebar-nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-[#4e4639] hover:text-[#775a19] hover:bg-[#fdf2f0] transition-all text-left">
+            <span class="material-symbols-outlined text-lg text-[#775a19]">groups</span>
+            <span>Inscripciones</span>
+          </button>
+
+          <button id="nav-pagos" class="sidebar-nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-[#4e4639] hover:text-[#775a19] hover:bg-[#fdf2f0] transition-all text-left">
+            <span class="material-symbols-outlined text-lg text-[#775a19]">payments</span>
+            <span>Control de Pagos</span>
+          </button>
+
+          <button id="nav-galeria" class="sidebar-nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-[#4e4639] hover:text-[#775a19] hover:bg-[#fdf2f0] transition-all text-left">
+            <span class="material-symbols-outlined text-lg text-[#775a19]">photo_library</span>
+            <span>Galería & Books</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Logout Only -->
+      <div class="pt-4 border-t border-[#d1c5b4]/60">
+        <button id="logout-btn-desktop" class="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-[#f9f9f9] hover:bg-rose-50 hover:text-rose-700 border border-[#d1c5b4] text-xs font-semibold text-[#4e4639] rounded-lg transition-colors min-h-[44px]">
+          <span class="material-symbols-outlined text-sm">logout</span> Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- MOBILE NAVIGATION DRAWER (Slide-out Overlay for Mobile) -->
+    <div id="mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex flex-col justify-end md:hidden">
+      <div class="bg-white rounded-t-2xl p-5 border-t border-[#d1c5b4] space-y-4">
+        <div class="flex justify-between items-center pb-2 border-b border-[#d1c5b4]/60">
+          <div class="flex items-center gap-2">
+            <span class="font-headline-md text-base text-[#775a19] font-bold tracking-wider">Nova Admin</span>
+          </div>
+          <button id="close-drawer-btn" class="p-2 text-[#645d5b] hover:text-[#775a19]">
+            <span class="material-symbols-outlined text-2xl">close</span>
+          </button>
+        </div>
+
+        <nav class="space-y-2">
+          <button id="drawer-nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-[#1a1c1c] hover:bg-[#fdf2f0] transition-all text-left min-h-[48px]">
+            <span class="material-symbols-outlined text-xl text-[#775a19]">dashboard</span> Dashboard
+          </button>
+
+          <button id="drawer-nav-inscripciones" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-[#1a1c1c] hover:bg-[#fdf2f0] transition-all text-left min-h-[48px]">
+            <span class="material-symbols-outlined text-xl text-[#775a19]">groups</span> Inscripciones
+          </button>
+
+          <button id="drawer-nav-pagos" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-[#1a1c1c] hover:bg-[#fdf2f0] transition-all text-left min-h-[48px]">
+            <span class="material-symbols-outlined text-xl text-[#775a19]">payments</span> Control de Pagos
+          </button>
+
+          <button id="drawer-nav-galeria" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-[#1a1c1c] hover:bg-[#fdf2f0] transition-all text-left min-h-[48px]">
+            <span class="material-symbols-outlined text-xl text-[#775a19]">photo_library</span> Galería & Books
+          </button>
+        </nav>
+
+        <div class="pt-3 border-t border-[#d1c5b4]/60">
+          <button id="drawer-logout-btn" class="w-full flex items-center justify-center gap-2 py-3 bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold rounded-lg min-h-[48px]">
+            <span class="material-symbols-outlined text-sm">logout</span> Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-grow flex flex-col min-w-0">
+      
+      <!-- Top Mobile / General Header -->
+      <header class="bg-white border-b border-[#d1c5b4] sticky top-0 z-30 px-4 py-3 flex items-center justify-between shadow-xs">
+        <div class="flex items-center gap-2 md:hidden">
+          <button id="mobile-menu-toggle" class="p-1.5 rounded-lg border border-[#d1c5b4] bg-[#f9f9f9] text-[#775a19] flex items-center justify-center min-h-[44px] min-w-[44px]">
+            <span class="material-symbols-outlined text-2xl">menu</span>
+          </button>
+          <div class="text-sm font-bold text-[#775a19] tracking-wider">NOVA ADMIN</div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+          <!-- Install PWA Button -->
+          <button id="pwa-install-btn" class="hidden items-center gap-1.5 px-3 py-2 min-h-[44px] bg-[#fdf2f0] border border-[#c5a059] text-[#775a19] hover:bg-[#c5a059]/10 text-xs font-bold uppercase rounded-lg transition-all">
+            <span class="material-symbols-outlined text-sm">download</span> Instalar App
+          </button>
+
+          <!-- Mobile Logout Button -->
+          <button id="logout-btn-mobile" class="md:hidden text-[#645d5b] hover:text-rose-600 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl">logout</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- VIEW SECTIONS CONTAINER -->
+      <main class="flex-grow p-4 md:p-8 max-w-7xl w-full mx-auto">
+        
+        <!-- SECTION 1: DASHBOARD -->
+        <section id="section-dashboard" class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl md:text-3xl font-bold text-[#1a1c1c] tracking-tight">Panel de Control</h2>
+            </div>
+            <div class="text-xs text-[#4e4639] bg-white px-3 py-2 rounded-lg border border-[#d1c5b4] self-start">
+              📅 Hoy: <span id="current-date-str" class="text-[#775a19] font-bold font-mono">13 Ago 2026</span>
+            </div>
+          </div>
+
+          <!-- KPI Cards (2 tarjetas principales) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-white p-4 sm:p-6 rounded-xl border border-[#d1c5b4]">
+              <div class="flex items-center justify-between text-[#4e4639] mb-2">
+                <span class="text-[11px] uppercase tracking-wider font-semibold">Total de Inscripciones</span>
+                <span class="material-symbols-outlined text-[#775a19]">groups</span>
+              </div>
+              <div id="dash-total-apps" class="text-2xl sm:text-3xl font-bold text-[#1a1c1c]">0</div>
+              <div class="text-[10px] text-[#645d5b] mt-1">Registradas en el sistema</div>
+            </div>
+
+            <div class="bg-white p-4 sm:p-6 rounded-xl border border-[#d1c5b4]">
+              <div class="flex items-center justify-between text-[#4e4639] mb-2 gap-2">
+                <span class="text-[11px] uppercase tracking-wider font-semibold">Total Recaudado</span>
+                <div class="flex items-center gap-1.5">
+                  <select id="dash-currency-select" class="bg-transparent text-xs font-bold text-[#775a19] border border-[#d1c5b4] rounded-lg px-2 py-0.5 focus:outline-none focus:border-[#775a19] cursor-pointer hover:bg-[#f9f9f9] transition-colors" title="Seleccionar Moneda">
+                    <option value="USD">USD</option>
+                    <option value="VES">VES</option>
+                    <option value="COP">COP</option>
+                  </select>
+                  <span class="material-symbols-outlined text-[#775a19]">payments</span>
+                </div>
+              </div>
+              <div id="dash-total-payments" class="text-2xl sm:text-3xl font-bold text-[#775a19]">$0.00</div>
+              <div class="text-[10px] text-[#645d5b] mt-1">Control de caja</div>
+            </div>
+          </div>
+
+          <!-- Recent Activity Overview -->
+          <div class="bg-white p-4 sm:p-5 rounded-xl border border-[#d1c5b4]">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-[#4e4639]">Últimas Postulaciones Recibidas</h3>
+              <button id="dash-see-all-apps" class="text-xs text-[#775a19] font-bold hover:underline p-1">Ver todas</button>
+            </div>
+            <div id="dash-recent-list" class="space-y-3">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: INSCRIPCIONES (POSTULANTES) -->
+        <section id="section-inscripciones" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-bold text-[#1a1c1c]">Gestión de Inscripciones</h2>
+            </div>
+          </div>
+
+          <!-- Controls Toolbar (Buscador) -->
+          <div class="bg-white p-4 rounded-xl border border-[#d1c5b4] flex flex-col md:flex-row gap-3 justify-between items-center">
+            <!-- Search input -->
+            <div class="relative w-full">
+              <span class="material-symbols-outlined absolute left-3 top-3 text-[#645d5b] text-sm">search</span>
+              <input id="search-input" type="text" placeholder="Buscar por nombre, email o ciudad..." class="w-full bg-[#f9f9f9] border border-[#d1c5b4] focus:border-[#775a19] rounded-lg pl-10 pr-4 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:outline-none transition-colors" />
+            </div>
+          </div>
+
+          <!-- Mobile Cards View (< 768px) -->
+          <div id="applications-cards-container" class="md:hidden space-y-4">
+            <!-- Rendered dynamically for Mobile -->
+          </div>
+
+          <!-- Desktop Table View (>= 768px) -->
+          <div id="applications-table-container" class="hidden md:block bg-white rounded-xl overflow-hidden border border-[#d1c5b4]">
+            <table class="w-full text-left text-xs text-[#1a1c1c]">
+              <thead class="bg-[#f9f9f9] text-[10px] text-[#4e4639] uppercase tracking-wider border-b border-[#d1c5b4]">
+                <tr>
+                  <th class="px-6 py-4 w-3/12">Candidata / Foto</th>
+                  <th class="px-6 py-4 w-3/12">Contacto</th>
+                  <th class="px-6 py-4 w-3/12">Atributos</th>
+                  <th class="px-6 py-4 w-2/12">Fecha</th>
+                  <th class="px-6 py-4 w-1/12 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="applications-table-body" class="divide-y divide-[#d1c5b4]/60">
+                <!-- Dynamic Rows -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 3: CONTROL DE PAGOS -->
+        <section id="section-pagos" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-bold text-[#1a1c1c]">Control de Pagos & Cuotas</h2>
+            </div>
+            <button id="open-payment-modal-btn" class="px-4 py-3 min-h-[48px] gold-gradient text-white text-xs font-bold uppercase rounded-lg shadow-sm flex items-center justify-center gap-2 w-full sm:w-auto transition-all">
+              <span class="material-symbols-outlined text-sm">add</span> Registrar Nuevo Pago
+            </button>
+          </div>
+
+          <!-- Mobile Cards View (< 768px) -->
+          <div id="payments-cards-container" class="md:hidden space-y-4">
+            <!-- Rendered dynamically for Mobile -->
+          </div>
+
+          <!-- Desktop Table View (>= 768px) -->
+          <div id="payments-table-container" class="hidden md:block bg-white rounded-xl overflow-hidden border border-[#d1c5b4]">
+            <table class="w-full text-left text-xs text-[#1a1c1c]">
+              <thead class="bg-[#f9f9f9] text-[10px] text-[#4e4639] uppercase tracking-wider border-b border-[#d1c5b4]">
+                <tr>
+                  <th class="px-6 py-4">ID / Modelo</th>
+                  <th class="px-6 py-4">Concepto</th>
+                  <th class="px-6 py-4">Monto</th>
+                  <th class="px-6 py-4">Método</th>
+                  <th class="px-6 py-4">Fecha</th>
+                  <th class="px-6 py-4 text-right" aria-label="Acciones"></th>
+                </tr>
+              </thead>
+              <tbody id="payments-table-body" class="divide-y divide-[#d1c5b4]/60">
+                <!-- Dynamic Rows -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 4: GALERÍA Y BOOKS -->
+        <section id="section-galeria" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-bold text-[#1a1c1c]">Galería & Books</h2>
+            </div>
+            <button id="open-gallery-modal-btn" class="px-4 py-3 min-h-[48px] gold-gradient text-white text-xs font-bold uppercase rounded-lg shadow-md flex items-center justify-center gap-2 w-full sm:w-auto transition-all">
+              <span class="material-symbols-outlined text-sm">add_a_photo</span> Subir Foto / Video
+            </button>
+          </div>
+
+          <!-- Admin Gallery Management Grid -->
+          <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <!-- Dynamic Gallery Cards with Red Delete Buttons -->
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bottom-nav-glass flex justify-around items-center py-2 px-2 border-t border-[#d1c5b4]">
+      <button id="mnav-dashboard" class="mobile-nav-btn tab-active-mobile flex flex-col items-center justify-center w-full py-1.5 text-[#645d5b] transition-all min-h-[48px]">
+        <span class="material-symbols-outlined text-xl text-[#775a19]">dashboard</span>
+        <span class="text-[10px] font-semibold mt-0.5">Inicio</span>
+      </button>
+
+      <button id="mnav-inscripciones" class="mobile-nav-btn flex flex-col items-center justify-center w-full py-1.5 text-[#645d5b] transition-all min-h-[48px]">
+        <span class="material-symbols-outlined text-xl">groups</span>
+        <span class="text-[10px] font-semibold mt-0.5">Inscritos</span>
+      </button>
+
+      <button id="mnav-pagos" class="mobile-nav-btn flex flex-col items-center justify-center w-full py-1.5 text-[#645d5b] transition-all min-h-[48px]">
+        <span class="material-symbols-outlined text-xl">payments</span>
+        <span class="text-[10px] font-semibold mt-0.5">Pagos</span>
+      </button>
+
+      <button id="mnav-galeria" class="mobile-nav-btn flex flex-col items-center justify-center w-full py-1.5 text-[#645d5b] transition-all min-h-[48px]">
+        <span class="material-symbols-outlined text-xl">photo_library</span>
+        <span class="text-[10px] font-semibold mt-0.5">Galería</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. MODALS FOR ACTIONS                       -->
+  <!-- ========================================== -->
+
+  <!-- CANDIDATE DETAIL MODAL -->
+  <div id="detail-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white max-w-xl w-full rounded-2xl overflow-hidden shadow-2xl border border-[#d1c5b4] relative text-[#1a1c1c] max-h-[90vh] flex flex-col">
+      <button id="close-modal-btn" class="absolute top-4 right-4 text-[#645d5b] hover:text-[#775a19] p-2 min-h-[44px] min-w-[44px] flex items-center justify-center z-10">
+        <span class="material-symbols-outlined text-2xl">close</span>
+      </button>
+
+      <div class="p-5 sm:p-8 overflow-y-auto">
+        <div class="flex items-center gap-4 mb-6">
+          <img id="modal-photo" src="" alt="Candidata" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-[#775a19]" />
+          <div>
+            <h3 id="modal-name" class="text-lg sm:text-xl font-bold text-[#775a19]">--</h3>
+            <span id="modal-category" class="text-xs uppercase font-mono text-[#4e4639]">--</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-[#f9f9f9] p-4 rounded-xl mb-6 border border-[#d1c5b4]">
+          <div><strong class="text-[#775a19]">ID:</strong> <span id="modal-id">--</span></div>
+          <div><strong class="text-[#775a19]">Fecha:</strong> <span id="modal-date">--</span></div>
+          <div><strong class="text-[#775a19]">Email:</strong> <span id="modal-email">--</span></div>
+          <div><strong class="text-[#775a19]">Teléfono:</strong> <span id="modal-phone">--</span></div>
+          <div><strong class="text-[#775a19]">Edad:</strong> <span id="modal-age">--</span></div>
+          <div><strong class="text-[#775a19]">Estatura:</strong> <span id="modal-height">--</span></div>
+          <div class="sm:col-span-2"><strong class="text-[#775a19]">Ciudad:</strong> <span id="modal-city">--</span></div>
+        </div>
+
+        <div id="modal-rep-container" class="mb-6">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-[#775a19] mb-1">Datos del Representante:</h4>
+          <p id="modal-exp" class="text-xs text-[#4e4639] bg-[#f9f9f9] p-3 rounded-lg border border-[#d1c5b4] whitespace-pre-line">--</p>
+        </div>
+
+        <div class="flex justify-end pt-4 border-t border-[#d1c5b4]">
+          <button id="modal-delete-btn" class="w-full sm:w-auto px-6 py-3 min-h-[48px] bg-rose-50 text-rose-700 hover:bg-rose-600 hover:text-white text-xs font-bold uppercase rounded-lg border border-rose-200 flex items-center justify-center gap-1 transition-colors">
+            <span class="material-symbols-outlined text-sm">delete</span> Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD PAYMENT MODAL -->
+  <div id="payment-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-5 sm:p-6 border border-[#d1c5b4] shadow-2xl relative text-[#1a1c1c]">
+      <button id="close-payment-modal-btn" class="absolute top-4 right-4 text-[#645d5b] hover:text-[#775a19] p-2 min-h-[44px] min-w-[44px] flex items-center justify-center">
+        <span class="material-symbols-outlined text-2xl">close</span>
+      </button>
+
+      <h3 class="text-lg font-bold text-[#775a19] mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined">payments</span> Registrar Nuevo Pago
+      </h3>
+
+      <form id="payment-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Nombre de la Modelo *</label>
+          <input id="pay-modelo" type="text" required placeholder="Ej. Elena Rostova" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Concepto del Pago *</label>
+          <input id="pay-concepto" type="text" required placeholder="Ej. Inscripción, Mensualidad Agosto" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
+        </div>
+
+        <!-- Moneda y Monto (Moneda a la izquierda, Monto a la derecha) -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Moneda *</label>
+            <select id="pay-moneda" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none font-semibold">
+              <option value="Dólares">Dólares (USD)</option>
+              <option value="Bolívares">Bolívares (VES)</option>
+              <option value="Pesos">Pesos (COP)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Monto *</label>
+            <div class="relative">
+              <span id="pay-monto-prefix" class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-[#775a19] pointer-events-none">$</span>
+              <input id="pay-monto" type="number" step="0.01" required placeholder="Ej: 25.00" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 pl-12 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none font-semibold" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Método de Pago (100% ancho completo) -->
+        <div>
+          <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Método de Pago *</label>
+          <select id="pay-metodo" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none font-semibold">
+            <!-- Dynamically populated based on Moneda selection -->
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 min-h-[48px] gold-gradient text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:opacity-95 transition-opacity mt-2">
+          Guardar Registro de Pago
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- UPLOAD GALLERY MEDIA MODAL (Native File Selector Dropzone) -->
+  <div id="gallery-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-5 sm:p-6 border border-[#d1c5b4] shadow-2xl relative text-[#1a1c1c] max-h-[90vh] overflow-y-auto">
+      <button id="close-gallery-modal-btn" class="absolute top-4 right-4 text-[#645d5b] hover:text-[#775a19] p-2 min-h-[44px] min-w-[44px] flex items-center justify-center">
+        <span class="material-symbols-outlined text-2xl">close</span>
+      </button>
+
+      <h3 class="text-lg font-bold text-[#775a19] mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined">add_a_photo</span> Publicar Foto o Video
+      </h3>
+
+      <form id="gallery-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase text-[#4e4639] mb-1">Título / Descripción *</label>
+          <input id="gal-titulo" type="text" required placeholder="Ej. Desfile Alta Costura Primavera" class="w-full bg-[#f9f9f9] border border-[#d1c5b4] rounded-lg p-3 min-h-[48px] text-base sm:text-xs text-[#1a1c1c] focus:border-[#775a19] focus:outline-none" />
+        </div>
+
+        <!-- Custom Dropzone for Native File Input (Photo or Video) -->
+        <div>
+          <label class="block text-xs font-semibold uppercase text-[#775a19] mb-1">Subir Archivo (Foto o Video) *</label>
+          <div class="relative border-2 border-dashed border-[#c5a059] rounded-xl p-6 text-center hover:border-[#775a19] transition-colors cursor-pointer bg-[#f9f9f9] group flex flex-col items-center justify-center min-h-[130px] overflow-hidden" id="gal-drop-zone">
+            <input type="file" id="gal-file-input" name="galFile" accept="image/png, image/jpeg, video/mp4" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+            
+            <div class="flex flex-col items-center justify-center pointer-events-none">
+              <span class="material-symbols-outlined text-3xl text-[#775a19] mb-1.5 group-hover:scale-110 transition-transform">cloud_upload</span>
+              <p class="text-xs font-bold text-[#1a1c1c]">Haz clic o arrastra tu archivo aquí</p>
+              <p class="text-[10px] text-[#645d5b] mt-0.5">Formatos aceptados: PNG, JPG o MP4</p>
+              <div id="gal-file-preview-name" class="mt-2.5 text-[11px] text-[#775a19] font-bold hidden bg-[#fdf2f0] px-3 py-1.5 rounded-lg border border-[#c5a059]/40 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">check_circle</span>
+                <span id="gal-file-name-span"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 min-h-[48px] gold-gradient text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:opacity-95 transition-opacity mt-2 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-base">publish</span> Publicar en Web Pública
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CUSTOM DELETE CONFIRMATION MODAL -->
+  <div id="delete-confirm-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white max-w-sm w-full rounded-2xl p-6 border border-[#d1c5b4] shadow-2xl relative text-[#1a1c1c] text-center space-y-4">
+      <div class="w-12 h-12 rounded-full bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center mx-auto">
+        <span class="material-symbols-outlined text-2xl">warning</span>
+      </div>
+
+      <div>
+        <p id="delete-modal-text" class="text-sm sm:text-base font-bold text-[#4e4639] leading-snug">¿Estás seguro de eliminar este elemento?</p>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <button id="cancel-delete-btn" class="w-1/2 py-3 min-h-[48px] bg-[#f9f9f9] hover:bg-[#fdf2f0] border border-[#d1c5b4] text-[#645d5b] text-xs font-bold uppercase rounded-lg transition-colors">
+          Cancelar
+        </button>
+        <button id="confirm-delete-btn" class="w-1/2 py-3 min-h-[48px] bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold uppercase rounded-lg shadow-sm transition-colors flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-sm">delete</span> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN TOAST NOTIFICATION -->
+  <div id="admin-toast" class="hidden fixed bottom-6 right-6 z-50 bg-emerald-700 text-white px-4 py-3 rounded-xl border border-emerald-500 shadow-xl flex items-center gap-2 text-xs font-bold transition-all">
+    <span class="material-symbols-outlined text-lg">check_circle</span>
+    <span id="admin-toast-message">Publicación eliminada correctamente.</span>
+  </div>
+
+  <script type="module" src="/src/admin.js"></script>
+</body>
+</html>

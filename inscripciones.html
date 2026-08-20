@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Inscripciones | Nova Models BY OMARIS SANABRIA</title>
+  <meta name="description" content="Formulario oficial de inscripción y casting para Nova Models." />
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/style.css" />
+
+  <style>
+    /* UX/UI Form Custom Styles */
+    .form-container {
+      max-width: 750px;
+      margin: 20px auto;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .col-full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      text-align: left;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #775a19;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 48px;
+      min-height: 48px;
+      border-radius: 8px;
+      padding: 0 15px;
+      border: 1px solid #d1c5b4;
+      background-color: #ffffff;
+      font-size: 16px; /* Prevents auto-zoom on iOS */
+      color: #1a1c1c;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-input:focus {
+      border-color: #775a19;
+      box-shadow: 0 0 0 2px rgba(119, 90, 25, 0.15);
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 52px;
+      min-height: 48px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      transition: opacity 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.95;
+    }
+
+    /* Smooth Fade Transition for Dynamic Fields */
+    .dynamic-field {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .dynamic-field.hidden {
+      display: none !important;
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    /* Responsive single column on screens under 768px */
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .form-container {
+        margin: 10px auto;
+      }
+      .form-input {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#f9f9f9] text-[#1a1c1c] font-body-md antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Top Navigation Bar (Sticky position top:0 z-index:999 ensures content flows naturally below header) -->
+  <nav class="sticky top-0 w-full z-[999] glass-nav border-b border-[#d1c5b4] transition-all duration-300">
+    <div class="flex justify-between items-center px-4 sm:px-8 py-3.5 max-w-6xl mx-auto">
+      
+      <!-- Top Left Brand with Logo Icon -->
+      <a class="flex items-center gap-3" href="/">
+        <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; max-width: 36px; max-height: 36px; overflow: hidden; border-radius: 6px; border: 1px solid rgba(197, 160, 89, 0.4); display: flex; align-items: center; justify-content: center; background: #ffffff;" class="shrink-0">
+          <img src="/assets/logo.jpg" alt="Nova Models Logo" style="width: 36px; height: 36px; max-width: 36px; max-height: 36px; object-fit: cover; object-position: top;" />
+        </div>
+        <div class="flex flex-col text-left">
+          <span class="font-headline-md text-base sm:text-xl text-[#775a19] font-bold tracking-widest uppercase leading-none">Nova Models</span>
+          <span class="font-label-caps text-[8px] sm:text-[10px] tracking-[0.35em] text-[#4e4639] uppercase font-semibold mt-1">BY OMARIS SANABRIA</span>
+        </div>
+      </a>
+
+      <!-- Right Side Actions: Back to Home -->
+      <div class="flex items-center gap-4">
+        <a class="inline-flex items-center gap-1.5 px-4 py-2 min-h-[44px] bg-white border border-[#d1c5b4] text-[#1a1c1c] hover:text-[#775a19] hover:border-[#775a19] font-button text-xs uppercase tracking-wider rounded-lg transition-all font-semibold" href="/">
+          <span class="material-symbols-outlined text-base">arrow_back</span> Volver al Inicio
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container (Flows naturally under Sticky Nav without overlapping) -->
+  <main class="py-8 sm:py-12 flex-grow w-full px-4">
+    
+    <!-- Contenedor Principal: max-width 750px -->
+    <div class="form-container bg-white p-5 sm:p-10 rounded-2xl relative overflow-hidden border border-[#d1c5b4] shadow-sm">
+      
+      <!-- Form Header -->
+      <div class="text-center mb-6 sm:mb-8">
+        <h1 class="font-headline-xl text-2xl sm:text-4xl font-bold text-[#775a19]">Formulario de Inscripción</h1>
+        <p class="text-xs sm:text-sm text-[#4e4639] mt-2 max-w-lg mx-auto leading-relaxed">Completa tus datos para postularte a nuestro equipo de modelos en San Cristóbal, Táchira.</p>
+        <div class="thin-divider mx-auto w-20 mt-4"></div>
+      </div>
+
+      <!-- Sistema de Cuadrícula (Grid) -->
+      <form id="registration-form" class="form-grid">
+        
+        <!-- Fila 1: Nombre Completo (100%) -->
+        <div class="col-full">
+          <label class="form-label" for="nombre">Nombre Completo *</label>
+          <input type="text" id="nombre" name="nombre" required class="form-input" placeholder="Ej. Ana María Silva"/>
+        </div>
+
+        <!-- Fila 2: Edad y Estatura -->
+        <div>
+          <label class="form-label" for="edad">Edad *</label>
+          <input type="number" id="edad" name="edad" min="1" max="60" required class="form-input" placeholder="Ej. 20"/>
+        </div>
+        <div>
+          <label class="form-label" for="altura">Estatura (cm) *</label>
+          <input type="text" id="altura" name="altura" required class="form-input" placeholder="Ej. 176 cm"/>
+        </div>
+
+        <!-- Fila 3: Correo y Teléfono -->
+        <div id="container-email" class="dynamic-field">
+          <label class="form-label" for="email">Correo Electrónico del Postulante *</label>
+          <input type="email" id="email" name="email" required class="form-input" placeholder="ana@ejemplo.com"/>
+        </div>
+        <div id="container-telefono" class="dynamic-field">
+          <label class="form-label" for="telefono">Teléfono / WhatsApp *</label>
+          <input type="tel" id="telefono" name="telefono" required class="form-input" placeholder="+58 400 000 0000"/>
+        </div>
+
+        <!-- Fila 4: Cédula de Identidad -->
+        <div id="container-cedula" class="col-full dynamic-field">
+          <label class="form-label" for="cedula">Cédula de Identidad del Postulante *</label>
+          <input type="text" id="cedula" name="cedula" required class="form-input" placeholder="Ej. V-28.123.456"/>
+        </div>
+
+        <!-- Sección Dinámica: Datos del Representante (Menores de Edad) -->
+        <div id="seccion-representante" class="col-full dynamic-field hidden">
+          <div class="border-t border-[#d1c5b4] pt-5 mt-2 mb-4">
+            <h3 class="font-headline-md text-base font-bold text-[#775a19] flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">family_restroom</span> Datos del Representante (Menor de Edad)
+            </h3>
+            <p class="text-xs text-[#4e4639] mt-1">Requerido para postulantes menores de 18 años.</p>
+          </div>
+
+          <div class="form-grid">
+            <div class="col-full">
+              <label class="form-label" for="nombreRepresentante">Nombre del Representante *</label>
+              <input type="text" id="nombreRepresentante" name="nombreRepresentante" class="form-input" placeholder="Ej. Carlos Silva"/>
+            </div>
+            <div>
+              <label class="form-label" for="emailRepresentante">Correo del Representante *</label>
+              <input type="email" id="emailRepresentante" name="emailRepresentante" class="form-input" placeholder="carlos@ejemplo.com"/>
+            </div>
+            <div>
+              <label class="form-label" for="telefonoRepresentante">Teléfono del Representante *</label>
+              <input type="tel" id="telefonoRepresentante" name="telefonoRepresentante" class="form-input" placeholder="+58 414 000 0000"/>
+            </div>
+            <div class="col-full">
+              <label class="form-label" for="cedulaRepresentante">Cédula del Representante *</label>
+              <input type="text" id="cedulaRepresentante" name="cedulaRepresentante" class="form-input" placeholder="Ej. V-15.987.654"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila: Fotografía de Postulación -->
+        <div class="col-full">
+          <label class="form-label" for="fotoFile">Fotografía de Postulación *</label>
+          <div class="relative border-2 border-dashed border-[#c5a059] rounded-lg p-5 text-center hover:border-[#775a19] transition-colors cursor-pointer bg-[#f9f9f9] group flex flex-col items-center justify-center min-h-[110px]" id="drop-zone">
+            <input type="file" id="fotoFile" name="fotoFile" accept="image/*" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+            <div class="flex flex-col items-center justify-center pointer-events-none">
+              <span class="material-symbols-outlined text-3xl text-[#775a19] mb-1 group-hover:scale-110 transition-transform">add_a_photo</span>
+              <p class="text-xs font-semibold text-[#1a1c1c]">Haz clic o arrastra aquí tu fotografía</p>
+              <p class="text-[10px] text-[#645d5b] mt-0.5">Formato JPG o PNG</p>
+              <div id="file-preview-name" class="mt-2 text-[11px] text-[#775a19] font-bold hidden bg-[#fdf2f0] px-3 py-1 rounded-lg border border-[#c5a059]/40"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila: Botón de Enviar (100%) -->
+        <div class="col-full pt-2">
+          <button type="submit" class="btn-submit gold-gradient text-white shadow-md">
+            Enviar Postulación
+          </button>
+        </div>
+      </form>
+
+      <!-- Notification Toast Container -->
+      <div id="toast" class="hidden fixed bottom-8 right-4 sm:right-8 z-50 bg-[#775a19] text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300">
+        <span class="material-symbols-outlined text-2xl">check_circle</span>
+        <div>
+          <h4 class="font-bold text-sm">¡Inscripción Recibida!</h4>
+          <p class="text-xs text-white/90">Tu postulación ha sido enviada al Panel Administrativo.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Official Footer -->
+  <footer class="relative z-20 bg-white border-t border-[#d1c5b4]/60 py-6 text-xs text-[#645d5b]">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-2.5">
+        <div style="width: 32px; height: 32px; min-width: 32px; min-height: 32px; max-width: 32px; max-height: 32px; overflow: hidden; border-radius: 6px; border: 1px solid rgba(197, 160, 89, 0.4); display: flex; align-items: center; justify-content: center; background: #ffffff;" class="shrink-0">
+          <img src="/assets/logo.jpg" alt="Nova Models Logo" style="width: 32px; height: 32px; max-width: 32px; max-height: 32px; object-fit: cover; object-position: top;" />
+        </div>
+        <span class="font-headline-md text-xs sm:text-sm text-[#775a19] font-bold tracking-wider uppercase">Nova Models BY OMARIS SANABRIA</span>
+      </div>
+      <div class="text-[11px]">&copy; 2026 Nova Models. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
