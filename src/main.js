@@ -154,9 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (dropZonePreview) {
       dropZonePreview.classList.add('hidden');
+      dropZonePreview.style.display = 'none';
     }
     if (dropZonePrompt) {
       dropZonePrompt.classList.remove('hidden');
+      dropZonePrompt.style.display = 'flex';
     }
   }
 
@@ -181,16 +183,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (fotoPreviewImg) {
           fotoPreviewImg.src = selectedFileObjectUrl;
+          fotoPreviewImg.style.maxHeight = '250px';
+          fotoPreviewImg.style.width = 'auto';
+          fotoPreviewImg.style.objectFit = 'contain';
+          fotoPreviewImg.style.marginBottom = '15px';
         }
 
         // Ocultar icono y textos iniciales de la zona de carga
         if (dropZonePrompt) {
           dropZonePrompt.classList.add('hidden');
+          dropZonePrompt.style.display = 'none';
         }
 
-        // Mostrar únicamente la miniatura con el botón eliminar
+        // Mostrar únicamente la miniatura centrada con el botón eliminar
         if (dropZonePreview) {
           dropZonePreview.classList.remove('hidden');
+          dropZonePreview.style.display = 'flex';
+          dropZonePreview.style.flexDirection = 'column';
+          dropZonePreview.style.alignItems = 'center';
+          dropZonePreview.style.justifyContent = 'center';
         }
 
         // Desactivar temporalmente pointer-events del input flotante para permitir hacer clic en el botón de eliminar
@@ -500,7 +511,7 @@ function initLightbox() {
     overlay.classList.remove('active');
     overlay.classList.add('hidden');
     document.body.style.overflow = '';
-    
+
     if (lightboxVideo) {
       lightboxVideo.pause();
       setTimeout(() => {
