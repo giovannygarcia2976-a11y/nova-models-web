@@ -183,10 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (fotoPreviewImg) {
           fotoPreviewImg.src = selectedFileObjectUrl;
-          fotoPreviewImg.style.maxHeight = '250px';
+          fotoPreviewImg.style.maxHeight = '220px';
           fotoPreviewImg.style.width = 'auto';
           fotoPreviewImg.style.objectFit = 'contain';
-          fotoPreviewImg.style.marginBottom = '15px';
+          fotoPreviewImg.style.marginBottom = '12px';
+          fotoPreviewImg.style.border = '1px solid rgba(197, 160, 89, 0.4)';
+          fotoPreviewImg.style.borderRadius = '8px';
         }
 
         // Ocultar icono y textos iniciales de la zona de carga
