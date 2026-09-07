@@ -358,7 +358,7 @@ async function renderApplicationsView() {
   if (cardsContainer) {
     cardsContainer.innerHTML = '';
     if (filtered.length === 0) {
-      cardsContainer.innerHTML = `<div class="p-8 text-center bg-white rounded-xl border border-[#d1c5b4] text-[#645d5b] text-xs">No se encontraron postulaciones en MongoDB.</div>`;
+      cardsContainer.innerHTML = `<div class="p-8 text-center bg-white rounded-xl border border-[#d1c5b4] text-[#645d5b] text-xs">No se encontraron postulaciones.</div>`;
     } else {
       filtered.forEach(app => {
         const card = document.createElement('div');
@@ -379,7 +379,7 @@ async function renderApplicationsView() {
             <button data-id="${app.id}" class="view-detail-btn flex-1 py-3 min-h-[48px] bg-[#f9f9f9] hover:bg-[#fdf2f0] border border-[#d1c5b4] text-xs font-bold uppercase rounded-lg text-[#775a19] transition-all flex items-center justify-center gap-1">
               <span class="material-symbols-outlined text-sm">visibility</span> Ver Expediente
             </button>
-            <button data-id="${app.id}" class="delete-app-btn px-4 min-h-[48px] bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white rounded-lg transition-all flex items-center justify-center shrink-0" title="Eliminar de MongoDB y Cloudinary">
+            <button data-id="${app.id}" class="delete-app-btn px-4 min-h-[48px] bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white rounded-lg transition-all flex items-center justify-center shrink-0" title="Eliminar expediente">
               <span class="material-symbols-outlined text-lg">delete</span>
             </button>
           </div>
@@ -393,7 +393,7 @@ async function renderApplicationsView() {
   if (tbody) {
     tbody.innerHTML = '';
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-[#645d5b] text-xs">No se encontraron postulaciones en MongoDB.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-[#645d5b] text-xs">No se encontraron postulaciones.</td></tr>`;
     } else {
       filtered.forEach(app => {
         const tr = document.createElement('tr');
@@ -419,7 +419,7 @@ async function renderApplicationsView() {
             <button data-id="${app.id}" class="view-detail-btn px-3 py-1.5 bg-[#f9f9f9] border border-[#d1c5b4] hover:border-[#775a19] text-[#775a19] text-[11px] font-bold uppercase rounded-lg transition-all">
               Detalles
             </button>
-            <button data-id="${app.id}" class="delete-app-btn p-2 bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white rounded-lg transition-all inline-flex items-center justify-center shrink-0 min-h-[34px] min-w-[34px]" title="Eliminar de MongoDB y Cloudinary">
+            <button data-id="${app.id}" class="delete-app-btn p-2 bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white rounded-lg transition-all inline-flex items-center justify-center shrink-0 min-h-[34px] min-w-[34px]" title="Eliminar expediente">
               <span class="material-symbols-outlined text-base">delete</span>
             </button>
           </td>
@@ -965,7 +965,7 @@ function initFormsAndModals() {
             if (detailModal) detailModal.classList.add('hidden');
             await renderApplicationsView();
             await renderDashboardView();
-            showAdminToast('Inscripción y foto eliminadas de MongoDB y Cloudinary.');
+            showAdminToast('Expediente y fotografía eliminados correctamente.');
           } else {
             const errData = await res.json();
             alert('Error al eliminar: ' + (errData.error || 'Ocurrió un error'));
@@ -992,7 +992,7 @@ function openDeleteConfirmModal(id, type = 'gallery') {
     } else if (type === 'gallery') {
       textEl.textContent = '¿Estás seguro de eliminar este elemento?';
     } else {
-      textEl.textContent = '¿Estás seguro de eliminar este expediente de MongoDB y Cloudinary?';
+      textEl.textContent = '¿Estás seguro de eliminar este expediente y su fotografía? Esta acción no se puede deshacer.';
     }
   }
 
