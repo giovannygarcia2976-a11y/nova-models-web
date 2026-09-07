@@ -1,5 +1,5 @@
 import { addApplication, getPublicPortfolioPage } from './store.js';
-import { API_URL } from './config.js';
+import { API_URL, optimizeCloudinaryUrl } from './config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Mobile drawer menu toggle
@@ -103,13 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
       } else {
+        const optimizedUrl = optimizeCloudinaryUrl(itemUrl);
         card.className = 'relative group overflow-hidden rounded-xl bg-white shadow-xs border border-[#d1c5b4] cursor-pointer aspect-[3/4] image-item';
         card.dataset.mediaType = 'image';
         card.dataset.imageUrl = itemUrl;
         card.dataset.title = item.titulo;
 
         card.innerHTML = `
-          <img src="${itemUrl}" alt="${item.titulo}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <img src="${optimizedUrl}" alt="${item.titulo}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-85 group-hover:opacity-95 transition-opacity pointer-events-none"></div>
           
           <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-5 text-white pointer-events-none z-10">
@@ -322,131 +323,162 @@ document.addEventListener('DOMContentLoaded', () => {
     regForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const formData = new FormData(regForm);
+      const submitBtn = regForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.innerHTML : 'Enviar Postulación';
+      const originalOpacity = submitBtn ? submitBtn.style.opacity : '';
 
-      const nombre = formData.get('nombre') ? formData.get('nombre').toString().trim() : '';
-      const edad = parseInt(formData.get('edad'), 10) || 0;
-      const altura = formData.get('altura') ? formData.get('altura').toString().trim() : '';
-      const email = formData.get('email') ? formData.get('email').toString().trim() : 'N/A';
-      const telefono = formData.get('telefono') ? formData.get('telefono').toString().trim() : 'N/A';
-      const cedula = formData.get('cedula') ? formData.get('cedula').toString().trim() : 'N/A';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Procesando postulación... espere';
+        submitBtn.style.opacity = '0.6';
+      }
 
-      const nombreRep = formData.get('nombreRepresentante') ? formData.get('nombreRepresentante').toString().trim() : '';
-      const emailRep = formData.get('emailRepresentante') ? formData.get('emailRepresentante').toString().trim() : '';
-      const telefonoRep = formData.get('telefonoRepresentante') ? formData.get('telefonoRepresentante').toString().trim() : '';
-      const cedulaRep = formData.get('cedulaRepresentante') ? formData.get('cedulaRepresentante').toString().trim() : '';
+      const restoreBtn = () => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.opacity = originalOpacity;
+        }
+      };
 
-      const genericErrorMessage = 'Ocurrió un error al procesar tu inscripción. Por favor, verifica tu conexión a internet e intenta de nuevo.';
+      try {
+        const formData = new FormData(regForm);
 
-      const fileInput = document.getElementById('fotoFile');
-      const file = fileInput && fileInput.files ? fileInput.files[0] : null;
+        const nombre = formData.get('nombre') ? formData.get('nombre').toString().trim() : '';
+        const edad = parseInt(formData.get('edad'), 10) || 0;
+        const altura = formData.get('altura') ? formData.get('altura').toString().trim() : '';
+        const email = formData.get('email') ? formData.get('email').toString().trim() : 'N/A';
+        const telefono = formData.get('telefono') ? formData.get('telefono').toString().trim() : 'N/A';
+        const cedula = formData.get('cedula') ? formData.get('cedula').toString().trim() : 'N/A';
 
-      let cloudSecureUrl = '';
+        const nombreRep = formData.get('nombreRepresentante') ? formData.get('nombreRepresentante').toString().trim() : '';
+        const emailRep = formData.get('emailRepresentante') ? formData.get('emailRepresentante').toString().trim() : '';
+        const telefonoRep = formData.get('telefonoRepresentante') ? formData.get('telefonoRepresentante').toString().trim() : '';
+        const cedulaRep = formData.get('cedulaRepresentante') ? formData.get('cedulaRepresentante').toString().trim() : '';
 
-      // 1. Subida silenciosa de archivo en segundo plano
-      if (file) {
-        try {
-          const uploadFormData = new FormData();
-          uploadFormData.append('file', file);
+        const genericErrorMessage = 'Ocurrió un error al procesar tu inscripción. Por favor, verifica tu conexión a internet e intenta de nuevo.';
 
-          const uploadResponse = await fetch(`${API_URL}/api/upload`, {
-            method: 'POST',
-            body: uploadFormData
-          });
+        const fileInput = document.getElementById('fotoFile');
+        const file = fileInput && fileInput.files ? fileInput.files[0] : null;
 
-          if (!uploadResponse.ok) {
+        let cloudSecureUrl = '';
+
+        // 1. Subida silenciosa de archivo en segundo plano
+        if (file) {
+          try {
+            const uploadFormData = new FormData();
+            uploadFormData.append('file', file);
+
+            const uploadResponse = await fetch(`${API_URL}/api/upload`, {
+              method: 'POST',
+              body: uploadFormData
+            });
+
+            if (!uploadResponse.ok) {
+              alert(genericErrorMessage);
+              restoreBtn();
+              return;
+            }
+
+            const uploadData = await uploadResponse.json();
+            if (uploadData && (uploadData.secure_url || uploadData.url)) {
+              cloudSecureUrl = uploadData.secure_url || uploadData.url;
+            } else {
+              alert(genericErrorMessage);
+              restoreBtn();
+              return;
+            }
+          } catch {
             alert(genericErrorMessage);
+            restoreBtn();
             return;
           }
+        }
 
-          const uploadData = await uploadResponse.json();
-          if (uploadData && (uploadData.secure_url || uploadData.url)) {
-            cloudSecureUrl = uploadData.secure_url || uploadData.url;
+        // 2. Guardar datos + URL silenciosamente en segundo plano
+        const postulationPayload = {
+          nombre,
+          edad,
+          telefono,
+          email,
+          cedula,
+          altura,
+          ciudad: 'San Cristóbal, Táchira',
+          categoria: 'Nuevos Talentos',
+          nombreRepresentante: nombreRep || undefined,
+          emailRepresentante: emailRep || undefined,
+          telefonoRepresentante: telefonoRep || undefined,
+          cedulaRepresentante: cedulaRep || undefined,
+          fotoUrl: cloudSecureUrl || selectedFileBase64 || '',
+          videoUrl: ''
+        };
+
+        let isSavedSuccessfully = false;
+        try {
+          const dbResponse = await fetch(`${API_URL}/api/postulaciones`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postulationPayload)
+          });
+
+          if (dbResponse.ok) {
+            isSavedSuccessfully = true;
           } else {
             alert(genericErrorMessage);
+            restoreBtn();
             return;
           }
         } catch {
           alert(genericErrorMessage);
+          restoreBtn();
           return;
         }
-      }
 
-      // 2. Guardar datos + URL silenciosamente en segundo plano
-      const postulationPayload = {
-        nombre,
-        edad,
-        telefono,
-        email,
-        cedula,
-        altura,
-        ciudad: 'San Cristóbal, Táchira',
-        categoria: 'Nuevos Talentos',
-        nombreRepresentante: nombreRep || undefined,
-        emailRepresentante: emailRep || undefined,
-        telefonoRepresentante: telefonoRep || undefined,
-        cedulaRepresentante: cedulaRep || undefined,
-        fotoUrl: cloudSecureUrl || selectedFileBase64 || '',
-        videoUrl: ''
-      };
+        // 3. Texto familiar de bienvenida para WhatsApp (Sin URLs de fotos, estrictamente privado)
+        if (isSavedSuccessfully) {
+          let waMessage = `✨ ¡Hola, equipo de Nova Models! ✨\n\n`;
+          waMessage += `Acabo de completar mi inscripción oficial en la página web. ¡Qué emoción formar parte de esta hermosa familia! 💖👠\n\n`;
+          waMessage += `Aquí les dejo un resumen de mi registro:\n`;
+          waMessage += `👤 Alumna: ${nombre}\n`;
+          waMessage += `📆 Edad: ${edad} años\n`;
+          waMessage += `📏 Estatura: ${altura}\n`;
+          waMessage += `🪪 Cédula: ${cedula || 'N/A'}\n`;
 
-      let isSavedSuccessfully = false;
-      try {
-        const dbResponse = await fetch(`${API_URL}/api/postulaciones`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(postulationPayload)
-        });
+          if (edad < 18) {
+            waMessage += `\n👥 DATOS DEL REPRESENTANTE:\n`;
+            if (nombreRep) waMessage += `▫️ Nombre: ${nombreRep}\n`;
+            if (emailRep) waMessage += `▫️ Correo: ${emailRep}\n`;
+            if (telefonoRep) waMessage += `▫️ Teléfono: ${telefonoRep}\n`;
+            if (cedulaRep) waMessage += `▫️ Cédula: ${cedulaRep}\n`;
+          }
 
-        if (dbResponse.ok) {
-          isSavedSuccessfully = true;
-        } else {
-          alert(genericErrorMessage);
-          return;
+          waMessage += `\n¡Ya estoy lista para comenzar esta hermosa experiencia y dar lo mejor de mí! Quedamos atentos a los siguientes pasos. 🌟`;
+
+          const encodedMessage = encodeURIComponent(waMessage);
+          const waUrl = `https://wa.me/584247337242?text=${encodedMessage}`;
+
+          window.open(waUrl, '_blank');
         }
-      } catch {
+
+        // Reset form & state de forma silenciosa
+        regForm.reset();
+        updateDynamicForm();
+        resetFotoUploadState();
+
+        if (toast) {
+          toast.classList.remove('hidden');
+          setTimeout(() => {
+            toast.classList.add('hidden');
+          }, 4000);
+        }
+
+        restoreBtn();
+      } catch (err) {
+        console.error('Error procesando el formulario:', err);
         alert(genericErrorMessage);
-        return;
-      }
-
-      // 3. Texto familiar de bienvenida para WhatsApp (Sin URLs de fotos, estrictamente privado)
-      if (isSavedSuccessfully) {
-        let waMessage = `✨ ¡Hola, equipo de Nova Models! ✨\n\n`;
-        waMessage += `Acabo de completar mi inscripción oficial en la página web. ¡Qué emoción formar parte de esta hermosa familia! 💖👠\n\n`;
-        waMessage += `Aquí les dejo un resumen de mi registro:\n`;
-        waMessage += `👤 Alumna: ${nombre}\n`;
-        waMessage += `📆 Edad: ${edad} años\n`;
-        waMessage += `📏 Estatura: ${altura}\n`;
-        waMessage += `🪪 Cédula: ${cedula || 'N/A'}\n`;
-
-        if (edad < 18) {
-          waMessage += `\n👥 DATOS DEL REPRESENTANTE:\n`;
-          if (nombreRep) waMessage += `▫️ Nombre: ${nombreRep}\n`;
-          if (emailRep) waMessage += `▫️ Correo: ${emailRep}\n`;
-          if (telefonoRep) waMessage += `▫️ Teléfono: ${telefonoRep}\n`;
-          if (cedulaRep) waMessage += `▫️ Cédula: ${cedulaRep}\n`;
-        }
-
-        waMessage += `\n¡Ya estoy lista para comenzar esta hermosa experiencia y dar lo mejor de mí! Quedamos atentos a los siguientes pasos. 🌟`;
-
-        const encodedMessage = encodeURIComponent(waMessage);
-        const waUrl = `https://wa.me/584247337242?text=${encodedMessage}`;
-
-        window.open(waUrl, '_blank');
-      }
-
-      // Reset form & state de forma silenciosa
-      regForm.reset();
-      updateDynamicForm();
-      resetFotoUploadState();
-
-      if (toast) {
-        toast.classList.remove('hidden');
-        setTimeout(() => {
-          toast.classList.add('hidden');
-        }, 4000);
+        restoreBtn();
       }
     });
   }

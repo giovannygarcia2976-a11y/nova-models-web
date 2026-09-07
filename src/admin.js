@@ -1,5 +1,5 @@
 import { checkAuth, login, logout, getCurrentUser } from './auth.js';
-import { API_URL } from './config.js';
+import { API_URL, optimizeCloudinaryUrl } from './config.js';
 import {
   getApplications,
   deleteApplication,
@@ -315,7 +315,7 @@ async function renderDashboardView() {
       div.className = 'flex items-center justify-between p-3 bg-[#f9f9f9] rounded-lg border border-[#d1c5b4]';
       div.innerHTML = `
         <div class="flex items-center gap-3">
-          <img src="${app.fotoUrl}" alt="${app.nombre}" class="w-9 h-9 rounded-full object-cover border border-[#c5a059]" />
+          <img src="${optimizeCloudinaryUrl(app.fotoUrl)}" alt="${app.nombre}" loading="lazy" class="w-9 h-9 rounded-full object-cover border border-[#c5a059]" />
           <div>
             <div class="text-xs font-bold text-[#1a1c1c]">${app.nombre}</div>
             <div class="text-[10px] text-[#4e4639]">${app.ciudad} • ${app.categoria || 'Modelos'}</div>
@@ -365,7 +365,7 @@ async function renderApplicationsView() {
         card.className = 'bg-white p-4 rounded-xl border border-[#d1c5b4] space-y-3 shadow-xs';
         card.innerHTML = `
           <div class="flex items-center gap-3">
-            <img src="${app.fotoUrl}" alt="${app.nombre}" class="w-12 h-12 rounded-full object-cover border border-[#775a19]" />
+            <img src="${optimizeCloudinaryUrl(app.fotoUrl)}" alt="${app.nombre}" loading="lazy" class="w-12 h-12 rounded-full object-cover border border-[#775a19]" />
             <div class="flex-grow">
               <div class="text-sm font-bold text-[#1a1c1c]">${app.nombre}</div>
               <div class="text-[11px] text-[#4e4639]">${app.ciudad} • ${app.edad} años</div>
@@ -400,7 +400,7 @@ async function renderApplicationsView() {
         tr.className = 'hover:bg-[#f9f9f9] transition-colors border-b border-[#d1c5b4]/60';
         tr.innerHTML = `
           <td class="px-6 py-4 flex items-center gap-3">
-            <img src="${app.fotoUrl}" alt="${app.nombre}" class="w-10 h-10 rounded-full object-cover border border-[#c5a059]" />
+            <img src="${optimizeCloudinaryUrl(app.fotoUrl)}" alt="${app.nombre}" loading="lazy" class="w-10 h-10 rounded-full object-cover border border-[#c5a059]" />
             <div>
               <div class="font-bold text-[#1a1c1c] text-sm">${app.nombre}</div>
               <div class="text-[10px] text-[#645d5b] font-mono">${app.id}</div>
@@ -598,9 +598,10 @@ async function renderGalleryView() {
           </div>
         `;
       } else {
+        const optimizedUrl = optimizeCloudinaryUrl(itemUrl);
         mediaHtml = `
           <div class="relative h-60 sm:h-64 overflow-hidden bg-[#f9f9f9] flex items-center justify-center">
-            <img src="${itemUrl}" alt="${item.titulo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <img src="${optimizedUrl}" alt="${item.titulo}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md border border-[#c5a059] text-[#775a19] px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider z-10 pointer-events-none">
               📷 FOTO
             </span>
@@ -832,12 +833,31 @@ function initFormsAndModals() {
     galForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      const submitBtn = galForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.innerHTML : '';
+      const originalOpacity = submitBtn ? submitBtn.style.opacity : '';
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Subiendo imagen...';
+        submitBtn.style.opacity = '0.6';
+      }
+
+      const restoreBtn = () => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.opacity = originalOpacity;
+        }
+      };
+
       const titulo = document.getElementById('gal-titulo').value.trim();
       const fileInput = document.getElementById('gal-file-input');
       const file = fileInput && fileInput.files ? fileInput.files[0] : null;
 
       if (!file && !gallerySelectedFileBase64) {
         alert('Por favor selecciona una fotografía o video desde tu dispositivo.');
+        restoreBtn();
         return;
       }
 
@@ -862,6 +882,7 @@ function initFormsAndModals() {
       const finalUrl = uploadedUrl || gallerySelectedFileBase64;
       if (!finalUrl) {
         alert('Ocurrió un error al procesar el archivo.');
+        restoreBtn();
         return;
       }
 
@@ -891,6 +912,8 @@ function initFormsAndModals() {
       if (galModal) galModal.classList.add('hidden');
       await renderGalleryView();
       showAdminToast('Publicación agregada al portafolio.');
+
+      restoreBtn();
     });
   }
 
@@ -1012,7 +1035,7 @@ function openDetailModal(id) {
   const cityEl = document.getElementById('modal-city');
   const expEl = document.getElementById('modal-exp');
 
-  if (photo) photo.src = app.fotoUrl;
+  if (photo) photo.src = optimizeCloudinaryUrl(app.fotoUrl);
   if (name) name.textContent = app.nombre;
   if (category) category.textContent = app.categoria || 'Modelos';
   if (idEl) idEl.textContent = app.id;
